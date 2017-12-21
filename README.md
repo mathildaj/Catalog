@@ -30,7 +30,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Installing the application
 
-1. Download or clone this VM onto your local machine: [VM for Log Analysis Project](http://github.com/udacity/fullstack-nanodegree-vm)
+1. Download or clone this VM onto your local machine: [VM for this Project](http://github.com/udacity/fullstack-nanodegree-vm)
 2. Download the catalog repository onto your local machine, place it under the VM folder /vagrant
 
 ## How to run the application
