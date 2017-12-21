@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+      <div class="row">
+
+        <div class="col-md-12">
+
+            <div class="jumbotron">
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <h2 class="no-margin">Delete Item</h2>
+                    </div>
+
+                </div>
+
+                <hr>
+
+                <div class="row is-flex">
+
+                        <div class="col-sm-6 col-lg-4 col-md-4">
+
+                            <form action="#" method="POST">
+
+                                <label for="name">Are you sure you want to delete this item?</label>
+
+                                <br>
+
+
+                                <label for="description">{{item.name}}</label>
+
+                                <br>
+
+                                <button type="submit" class="btn btn-success">
+                                    Submit
+                                </button>
+                                <a href="{{url_for('showAll')}}">
+                                    <button type="button" class="btn btn-success">
+                                        Cancel
+                                    </button>
+                                </a>
+
+                            </form>
+
+                        </div>
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+{% endblock %}

@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+      <div class="row">
+
+        <div class="col-md-12">
+
+            <div class="jumbotron">
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <h2 class="no-margin">Add Item</h2>
+                        (* required field)
+                    </div>
+
+                </div>
+
+                <hr>
+
+                <div class="row is-flex">
+
+                        <div class="col-sm-6 col-lg-4 col-md-4">
+
+                            <form action="#" method="POST">
+
+                                <label for="name">Name: *</label>
+                                <input type="text" maxlength="80" class="form-control" id="name" name="name" required>
+                                <br>
+
+                                <label for="description">Description: *</label>
+                                <textarea maxlength="500" rows="5" class="form-control text-left" id="description" name="description" required>
+                                </textarea>
+                                <br>
+
+                                <label for="category">Category: *</label>
+                                <select class="form-control" id="category" name="category" required>
+                                    {% for category in categories %}
+                                        <option value="{{category.id}}">{{category.name}}</option>
+                                    {% endfor %}
+                                </select>
+                                <br>
+                                <button type="submit" class="btn btn-success">
+                                    Submit
+                                </button>
+                                <a href="{{url_for('showAll')}}">
+                                    <button type="button" class="btn btn-success">
+                                        Cancel
+                                    </button>
+                                </a>
+
+                            </form>
+
+                        </div>
+
+                </div> <!-- end of row is-flex-->
+
+            </div>
+
+        </div>
+
+    </div>
+
+{% endblock %}

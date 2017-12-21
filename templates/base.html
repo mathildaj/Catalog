@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Purrfect Store</title>
+  <!--bootstrap css-->
+  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <!--the following one is for bootstrap 4-->
+  <!--link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous"-->
+
+  <!--link rel="stylesheet" type="text/css" href="bootstrap.css"-->
+  <!--font awesome css-->
+  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+  <!--google fonts-->
+  <link href="https://fonts.googleapis.com/css?family=Lato:400,700" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="/static/css/main.css">
+</head>
+
+<body>
+
+<!--bootstrap navbar-->
+<nav class="navbar navbar-default">
+  <div class="container">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">Purrfect Store</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="{{ url_for('showAll') }}">Home</a></li>
+        <!--li><a href="">About</a></li>
+        <li><a href="">Contact</a></li-->
+      </ul>
+
+      <ul class="nav navbar-nav navbar-right">
+        <!--li><a href="#">Sign Up <i class="fa fa-user-plus"></i></a></li-->
+        {% if session['name'] %}
+          <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                  <span class="glyphicon glyphicon-user" aria-hidden="true"></span> {{ session['name'] }}<span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu">
+                  <li><a href="{{ url_for('logout') }}" role="button">Log out</a></li>
+              </ul>
+          </li>
+        {% else %}
+            <li><a href="{{ url_for('login') }}" role="button" data-toggle="modal"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>Log in with Google</a></li>
+        {% endif %}
+      </ul>
+
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+
+<!--end of navbar-->
+
+<!--the main content, to be filled-->
+<div class="container">
+  <div id="content">{% block content %}{% endblock %}</div>
+</div>
+<!--end of main content-->
+
+
+<!--footer-->
+<div class="container">
+  <!--div class="footer text-center"-->
+  <div class="navbar navbar-default text-center">
+        {% block footer %}
+        &copy; Copyright 2017
+        {% endblock %}
+  </div>
+</div>
+<!--end of footer-->
+
+<!--jQuery, needs to be before javascript-->
+<script src="https://code.jquery.com/jquery-3.1.1.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<!--the following is for bootstrap 4-->
+<!--script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script-->
+
+</body>
+
+</html>

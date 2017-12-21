@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block content %}
+
+       <div class="row">
+        <div class="col-md-3">
+            <div class="row">
+                <div class="col-md-6"><p class="lead">Categories</p></div>
+            </div>
+            <div class="list-group">
+                {% for category in categories %}
+                    <a href="{{url_for('showCategory', category_id=category.id)}}" class="list-group-item">
+                        {{category.name}}
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="jumbotron">
+                <div class="row">
+                    <div class="col-md-4">
+                        <h2 class="no-margin">Latest Items</h2>
+                    </div>
+                    <div class="col-md-8 text-right">
+                        {% if session['name'] %}
+                            <a href="{{url_for('newItem')}}"><button class="btn btn-success btn-outline"role="button">Add Item</button></a>
+                        {% else %}
+                            <button class="btn btn-disabled" disabled>Add Item</button>
+                        {% endif %}
+                    </div>
+                </div>
+                <hr>
+                <div class="row is-flex">
+                    {% for item in items %}
+                        <div class="col-sm-6 col-lg-4 col-md-4">
+                            <div class="thumbnail">
+                                {% if item[1].image == None %}
+                                    <img src={{url_for('static', filename="images/cat_190.jpg")}}>
+                                {% else %}
+                                    <img src="{{item[1].image}}" alt="{{item[1].name}} Image">
+                                {% endif %}
+                                <h4 class="text-center item-name">
+                                    {{item[1].name}}
+                                </h4>
+                                <div class="text-center faded">
+                                    ({{item[0].name}})
+                                </div>
+                                <div class="text-center details">
+                                <p><a class="btn btn-default" href="{{url_for('showItem', category_id=item[0].id, item_id=item[1].id)}}" role="button">View details &raquo;</a></p>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

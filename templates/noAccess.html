@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+      <div class="row">
+
+        <div class="col-md-12">
+
+            <div class="jumbotron">
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <h2 class="no-margin">Access Denied</h2>
+                    </div>
+
+                </div>
+
+                <hr>
+
+                <div class="row is-flex">
+
+                        <div class="col-sm-6 col-lg-4 col-md-4">
+
+                            <form action="#">
+
+                                <label for="name">You do not have permission to this item</label>
+
+                                <br>
+
+                               <a href="{{url_for('showAll')}}">
+                                    <button type="button" class="btn btn-success">
+                                        Back to Home Page
+                                    </button>
+                                </a>
+
+                            </form>
+
+                        </div>
+
+
+                </div> <!-- end of row is-flex-->
+
+            </div>
+
+        </div>
+
+    </div>
+
+{% endblock %}
