@@ -15,6 +15,8 @@ from flask import redirect, session, make_response
 # pip install --user flask-oauthlib
 from flask_oauthlib.client import OAuth
 
+from functools import wraps
+
 import json
 import httplib2
 
@@ -44,8 +46,8 @@ Thanks to https://github.com/lepture/flask-oauthlib
 # And that is by design
 
 app = Flask(__name__)
-app.config['GOOGLE_ID'] = "replace it with your CLIENT_ID"
-app.config['GOOGLE_SECRET'] = "replace it with your CLIENT_SECRET"
+app.config['GOOGLE_ID'] = "replace with your CLIENT_ID"
+app.config['GOOGLE_SECRET'] = "replace with your CLIENT_SECRET"
 app.debug = True
 app.secret_key = 'development'
 oauth = OAuth(app)
@@ -63,6 +65,18 @@ google = oauth.remote_app(
     access_token_url='https://accounts.google.com/o/oauth2/token',
     authorize_url='https://accounts.google.com/o/oauth2/auth',
 )
+
+
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'google_token' not in session:
+            flash("You have no permission to access this page!")
+            return redirect(url_for('login'))
+        else:
+            return f(*args, **kwargs)
+
+    return decorated_function
 
 
 @app.route('/login')
@@ -208,6 +222,10 @@ def showAll():
 def showCategory(category_id):
     categories = db_session.query(Category).order_by(asc(Category.id))
     category = db_session.query(Category).filter_by(id=category_id).first()
+    # if category does not exist, redirect
+    if category is None:
+        flash("The category does NOT exist!")
+        return redirect(url_for('showAll'))
     # the order category_id=category.id is important, can't be reversed
     items = db_session.query(Item).filter_by(category_id=category.id).order_by(
         desc(Item.createdDate))
@@ -224,6 +242,12 @@ def showItem(category_id, item_id):
     categories = db_session.query(Category).order_by(asc(Category.id))
     category = db_session.query(Category).filter_by(id=category_id).first()
     item = db_session.query(Item).filter_by(id=item_id).first()
+
+    # if category or item does not exist, redirect
+    if category is None or item is None:
+        flash("The category or item does NOT exist!")
+        return redirect(url_for('showAll'))
+
     return render_template('item.html',
                            categories=categories,
                            category=category,
@@ -234,10 +258,8 @@ def showItem(category_id, item_id):
 
 @app.route('/catalog/<int:category_id>/<int:item_id>/edit',
            methods=['GET', 'POST'])
+@login_required
 def editItem(category_id, item_id):
-    # if user is NOT logged in with Google, redirect
-    if 'google_token' not in session:
-        return redirect(url_for('login'))
     # if user is NOT the creator of this item, he can not edit
     item = getItem(item_id)
     if item is None:
@@ -251,9 +273,15 @@ def editItem(category_id, item_id):
     if(session['email'] is None or session['email'] != item_creator.email):
         return render_template('noAccess.html')
 
-    # if all checks out, modify the item and save to database
     category = db_session.query(Category).filter_by(id=category_id).first()
     itemToEdit = db_session.query(Item).filter_by(id=item_id).first()
+
+    # if category or item does not exist, redirect
+    if category is None or itemToEdit is None:
+        flash("The category or item does NOT exist!")
+        return redirect(url_for('showAll'))
+
+    # if all checks out, modify the item and save to database
     if request.method == 'POST':
         # for this application, I am NOT allowing the user to modify the item's
         # category or upload a new image. These features can be added in the
@@ -275,10 +303,8 @@ def editItem(category_id, item_id):
 # Create route for creating a new item
 
 @app.route('/catalog/items/new', methods=['GET', 'POST'])
+@login_required
 def newItem():
-    # if user is NOT logged in with Google, redirect
-    if 'google_token' not in session:
-        return redirect(url_for('login'))
     # if user can not be found, deny access
     user = getUser(session)
     if user is None:
@@ -315,10 +341,8 @@ def newItem():
 
 @app.route('/catalog/<int:category_id>/<int:item_id>/delete',
            methods=['GET', 'POST'])
+@login_required
 def deleteItem(category_id, item_id):
-    # if user is NOT logged in with Google, redirect
-    if 'google_token' not in session:
-        return redirect(url_for('login'))
     # if user is NOT the creator of this item, he can not delete
     item = getItem(item_id)
     if item is None:
@@ -332,10 +356,15 @@ def deleteItem(category_id, item_id):
     if(session['email'] is None or session['email'] != item_creator.email):
         return render_template('noAccess.html')
 
-    # when all checks out, delete the item and commit to database
     category = db_session.query(Category).filter_by(id=category_id).first()
     itemToDelete = db_session.query(Item).filter_by(id=item_id).first()
 
+    # if category or item does not exist, redirect
+    if category is None or itemToDelete is None:
+        flash("The category or item does NOT exist!")
+        return redirect(url_for('showAll'))
+
+    # when all checks out, delete the item and commit to database
     if request.method == 'POST':
         db_session.delete(itemToDelete)
         db_session.commit()
@@ -363,6 +392,15 @@ def get_catalog_json():
             categories_dict[cat]["Item"] = items
     # return the json object
     return jsonify(Category=categories_dict)
+
+
+# API Endpoint for an item
+
+@app.route('/category/<int:category_id>/item/<int:item_id>/JSON')
+def get_item_json(category_id, item_id):
+    category = db_session.query(Category).filter_by(id=category_id).first()
+    item = db_session.query(Item).filter_by(id=item_id).first()
+    return jsonify(Category=category.serialize, Item=item.serialize)
 
 
 if __name__ == '__main__':

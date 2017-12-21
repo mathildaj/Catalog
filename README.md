@@ -1,10 +1,10 @@
 # Project Description
 
-A full stack web application for a geriatric cat care store item catalog
+A RESTFUL full stack web application for a geriatric cat care store item catalog
 1. Utilizing Flask framework with Python
 2. Backend utilizes Sqlachemy with Sqlite (can also be converted to use Postgres)
 3. Authentication uses latest Flask OAuth library (as of Dec 2017) with Google SignIn
-4. CRUD and responsive design
+4. CRUD and responsive design with Bootstrap CSS
 5. API Endpoint with JSON
 
 ![alt text](app_screenshot.jpg)
@@ -54,7 +54,7 @@ This may take a long time to run for the first time. Be patient.
 5. Once Git Bash is at the command prompt again, type vagrant ssh
 
 ```
-$ vagrant up
+$ vagrant ssh
 ```
 This will let your log into your VM.
 
@@ -69,7 +69,7 @@ $ pip install --user flask-oauthlib
 
 ```
 $ cd /vagrant
-$ cd /catalog
+$ cd catalog
 ```
 
 8. At the command prompt, run
