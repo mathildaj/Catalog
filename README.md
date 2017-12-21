@@ -5,6 +5,7 @@ A full stack web application for a geriatric cat care store item catalog
 2. Backend utilizes Sqlachemy with Sqlite (can also be converted to use Postgres)
 3. Authentication uses latest Flask OAuth library (as of Dec 2017) with Google SignIn
 4. CRUD and responsive design
+5. API Endpoint with JSON
 
 ![alt text](app_screenshot.jpg)
 
@@ -88,6 +89,8 @@ $ python views.py
 
 10. Start up a browser, and type http://localhost:5000 to see the app running.
 
+11. To get the API JSON object, run http://localhost:5000/catalog.json (For development purpose, it is NOT a restricted resource)
+
 
 ## Authors
 
@@ -101,4 +104,5 @@ None
 
 * https://github.com/lepture/flask-oauthlib
 * https://unsplash.com/search/photos/cat
+* http://www.joybies.com/petstore/
 
