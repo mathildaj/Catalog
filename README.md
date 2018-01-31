@@ -92,9 +92,6 @@ $ python views.py
 11. To get the API JSON object, run http://localhost:5000/catalog.json (For development purpose, it is NOT a restricted resource)
 
 
-## Authors
-
-* **Ying Xie**
 
 ## License
 
